@@ -211,6 +211,120 @@ def _(page):
     contains(confirm, "Sam", "confirmation approver")
 
 
+# ---------------------------------------------------------------- Expense Pot
+@check("expense pot: allowable total excludes non-allowable")
+def _(page):
+    """Hand calc: 51.98 + (32.00@70%=22.40) + 24.60 + 189.00 + 84.10 + 140.00 = 512.08.
+    Client lunch 96.50 and own coffee 4.20 are not allowable -> 100.70 excluded."""
+    open_product(page, "expense-pot", "ExpensePot.html")
+    page.click("#demo")
+    eq(page.inner_text("#sTotal"), "£512.08", "allowable total")
+    eq(page.inner_text("#sBad"), "£100.70", "not allowable")
+    eq(page.inner_text("#sCount"), "8", "entries")
+
+
+@check("expense pot: business percentage applies per row")
+def _(page):
+    """70% of 100 is 70, not 100."""
+    open_product(page, "expense-pot", "ExpensePot.html")
+    page.click("#demo")
+    page.locator("#rows tr").first.locator(".f-amt").fill("100")
+    page.locator("#rows tr").first.locator(".f-pct").fill("70")
+    page.dispatch_event("#rows tr:nth-child(1) .f-pct", "input")
+    # first row drops from 51.98 to 70.00, so total moves by +18.02
+    eq(page.inner_text("#sTotal"), "£530.10", "total after partial claim")
+
+
+@check("expense pot: largest category reported")
+def _(page):
+    open_product(page, "expense-pot", "ExpensePot.html")
+    page.click("#demo")
+    contains(page.inner_text("#sTop"), "Equipment", "top category")
+    contains(page.inner_text("#sTopSub"), "189.00", "top category amount")
+
+
+# ---------------------------------------------------------------- Time Log
+@check("time log: hours, value and effective rate")
+def _(page):
+    """Hand calc: 3 + 5.5 + 2 + 6 + 1.5 = 18.00h; billable 1237.50; effective 68.75."""
+    open_product(page, "time-log", "TimeLog.html")
+    page.click("#demo")
+    eq(page.inner_text("#tHours"), "18.00", "hours")
+    eq(page.inner_text("#tValue"), "£1,237.50", "billable")
+    eq(page.inner_text("#tEff"), "£68.75", "effective rate")
+
+
+@check("time log: repeated task merges into one invoice line")
+def _(page):
+    """5.5h + 2h of the same task must appear once, at 7.50h."""
+    open_product(page, "time-log", "TimeLog.html")
+    page.click("#demo")
+    doc = page.inner_text("#doc")
+    if doc.count("Sitemap and wireframes") != 1:
+        raise AssertionError(f"task not merged, found {doc.count('Sitemap and wireframes')} lines")
+    contains(doc, "7.50", "merged hours")
+    contains(doc, "562.50", "merged amount")
+
+
+@check("time log: unbilled time still counts toward effective rate")
+def _(page):
+    open_product(page, "time-log", "TimeLog.html")
+    page.click("#demo")
+    contains(page.inner_text("#doc"), "Client call (unbilled)", "unbilled row")
+    # 1237.50 over 18h, not over the 16.5 billed hours
+    eq(page.inner_text("#tEff"), "£68.75", "effective rate includes unbilled")
+
+
+# ---------------------------------------------------------------- Cashflow
+@check("cashflow: month 2 near-miss with a 45 day payment delay")
+def _(page):
+    """Cash 4200, income 4500, costs 600, draw 2200, delay 45, tax 8000 in month 10.
+
+    Month 1: nothing paid yet -> 4200 - 2800 = 1400.
+    Month 2: half of month 1's work lands -> 1400 + 2250 - 2800 = 850.
+    Lowest point is 850 in month 2, NOT the tax month.
+    """
+    open_product(page, "cashflow", "Cashflow.html")
+    page.click("#demo")
+    rows = page.locator("#rows tr")
+    eq(rows.count(), 12, "months projected")
+    eq(page.inner_text("#lowest"), "£850.00", "lowest balance")
+    # First month already sits at 1400 against 2800 of outgoings, so the first
+    # month under one month's cover is month 1 itself, not the 850 low in month 2.
+    contains(page.inner_text("#sTight"), "Nov", "first tight month")
+
+
+@check("cashflow: tax lands in the named month only")
+def _(page):
+    """Month 10 carries the 8000 hit; no other month has a tax figure."""
+    open_product(page, "cashflow", "Cashflow.html")
+    page.click("#demo")
+    tax_cells = page.evaluate(
+        """() => [...document.querySelectorAll('#rows tr')]
+                 .map(tr => tr.children[5].innerText.trim())
+                 .filter(t => t !== '\u2014')"""
+    )
+    eq(len(tax_cells), 1, "months carrying tax")
+    eq(tax_cells[0], "£8,000.00", "tax amount")
+
+
+@check("cashflow: zero delay pays immediately")
+def _(page):
+    """With no delay, month 1 should receive a full month's income."""
+    open_product(page, "cashflow", "Cashflow.html")
+    page.fill("#cash", "0")
+    page.fill("#income", "3000")
+    page.fill("#costs", "0")
+    page.fill("#personal", "0")
+    page.fill("#tax", "0")
+    page.fill("#delay", "0")
+    page.dispatch_event("#delay", "input")
+    first_income = page.evaluate(
+        "() => document.querySelectorAll('#rows tr')[0].children[2].innerText.trim()"
+    )
+    eq(first_income, "£3,000.00", "month 1 income with no delay")
+
+
 # ---------------------------------------------------------------- Invoice Desk
 @check("invoice desk: loads without error")
 def _(page):
