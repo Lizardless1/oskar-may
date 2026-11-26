@@ -1,0 +1,10 @@
+# Product sources are the paid goods. This repository is public and serves the
+# marketing page, so the actual files must never land here.
+products/
+*.zip
+
+# local
+__pycache__/
+.pytest_cache/
+node_modules/
+.DS_Store
