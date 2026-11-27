@@ -325,6 +325,49 @@ def _(page):
     eq(first_income, "£3,000.00", "month 1 income with no delay")
 
 
+# ---------------------------------------------------------------- Pipeline
+@check("pipeline: reply rate, chase and stale counts")
+def _(page):
+    """Seven contacts: 2 replied (29%), 1 due a chase at 6d, 1 stale at 34d, 1 won."""
+    open_product(page, "pipeline", "Pipeline.html")
+    page.click("#demo")
+    eq(page.inner_text("#sTotal"), "7", "contacted")
+    eq(page.inner_text("#sReplied"), "2", "replied")
+    eq(page.inner_text("#sDue"), "1", "due a chase")
+    eq(page.inner_text("#sStale"), "1", "going stale")
+    eq(page.inner_text("#sWon"), "1", "won")
+
+
+@check("pipeline: urgency flags land on the right rows")
+def _(page):
+    """Priya at 6 days is amber; Tom at 34 days is red; a reply is left alone."""
+    open_product(page, "pipeline", "Pipeline.html")
+    page.click("#demo")
+    state = page.evaluate(
+        """() => [...document.querySelectorAll('#rows tr')].map(tr => ({
+             who: tr.querySelector('.f-who').value,
+             cls: tr.className
+           }))"""
+    )
+    by_who = {r["who"]: r["cls"] for r in state}
+    eq(by_who.get("Priya"), "due", "Priya should be due")
+    eq(by_who.get("Tom"), "stale", "Tom should be stale")
+    eq(by_who.get("Sam"), "", "a replied contact must not be chased")
+    eq(by_who.get("Samantha"), "", "a 1-day contact must not be chased")
+
+
+@check("pipeline: status filter hides the rest")
+def _(page):
+    open_product(page, "pipeline", "Pipeline.html")
+    page.click("#demo")
+    page.click('.chip[data-f="Won"]')
+    visible = page.evaluate(
+        """() => [...document.querySelectorAll('#rows tr')]
+                 .filter(tr => tr.style.display !== 'none').length"""
+    )
+    eq(visible, 1, "rows visible when filtering to Won")
+
+
 # ---------------------------------------------------------------- Invoice Desk
 @check("invoice desk: loads without error")
 def _(page):
