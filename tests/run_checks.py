@@ -368,6 +368,58 @@ def _(page):
     eq(visible, 1, "rows visible when filtering to Won")
 
 
+# ---------------------------------------------------------------- VAT Guard
+@check("vat guard: forward risk fires when run rate projects over the line")
+def _(page):
+    """62000 in 8 months = 7750/month -> 93000 rolling, over a 90000 threshold.
+
+    Turnover to date is only 62000, which looks safe. The projection is not, and
+    the tool must say so rather than reassure.
+    """
+    open_product(page, "vat-guard", "VatGuard.html")
+    page.click("#demo")
+    eq(page.inner_text("#headroom"), "£28,000", "headroom")
+    eq(page.inner_text("#runRate"), "£7,750", "run rate")
+    eq(page.inner_text("#wRolling"), "£93,000", "rolling projection")
+    eq(page.inner_text("#crossing"), "4 months", "months to cross")
+    contains(page.inner_text("#headline"), "Register before you cross", "headline")
+    eq(page.get_attribute("#hero", "class"), "hero crit", "severity")
+
+
+@check("vat guard: genuinely comfortable case stays green")
+def _(page):
+    """30000 in 8 months = 3750/month -> 45000 rolling, half the threshold."""
+    open_product(page, "vat-guard", "VatGuard.html")
+    page.fill("#turnover", "30000")
+    page.dispatch_event("#turnover", "input")
+    contains(page.inner_text("#headline"), "Comfortable", "headline")
+    eq(page.get_attribute("#hero", "class"), "hero", "severity")
+    # 45000 is the rolling projection, which lives in #wRolling.
+    # (An earlier version of this test looked for it in the headline copy, where it
+    # never appears - the comfortable branch talks about headroom, not the projection.)
+    eq(page.inner_text("#wRolling"), "£45,000", "rolling projection")
+
+
+@check("vat guard: past the threshold demands registration")
+def _(page):
+    open_product(page, "vat-guard", "VatGuard.html")
+    page.fill("#turnover", "95000")
+    page.dispatch_event("#turnover", "input")
+    contains(page.inner_text("#headline"), "must be registered", "headline")
+    eq(page.get_attribute("#hero", "class"), "hero crit", "severity")
+    eq(page.inner_text("#headroom"), "-£5,000", "negative headroom")
+    eq(page.get_attribute("#fill", "style"), "width: 100%;", "gauge full")
+
+
+@check("vat guard: absorbing VAT costs a sixth, not a fifth")
+def _(page):
+    """20/120 = 16.67%. Confusing this with 20% is the common error."""
+    open_product(page, "vat-guard", "VatGuard.html")
+    page.click("#demo")
+    eq(page.inner_text("#wCut"), "16.67%", "effective cut")
+    eq(page.inner_text("#wVat"), "£1,550 per month", "monthly VAT at 20%")
+
+
 # ---------------------------------------------------------------- Invoice Desk
 @check("invoice desk: loads without error")
 def _(page):
