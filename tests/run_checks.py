@@ -532,6 +532,63 @@ def _(page):
     contains(page.inner_text("#nadir"), "6,000", "miles remaining at 45p")
 
 
+# ---------------------------------------------------------------- Status Note
+@check("status note: short tone is genuinely short and complete")
+def _(page):
+    """The default tone must stay skimmable - a status email that needs reading is a failure."""
+    open_product(page, "status-note", "StatusNote.html")
+    page.click("#demo")
+    doc = page.inner_text("#doc")
+    contains(doc, "Sam", "client")
+    contains(doc, "on track", "status line")
+    contains(doc, "60% through", "progress")
+    contains(doc, "I need from you", "blockers")
+    contains(doc, "Logo files", "blocker item")
+    contains(doc, "Oskar", "signature")
+    if len(doc) > 900:
+        raise AssertionError(f"short tone too long to skim: {len(doc)} chars")
+
+
+@check("status note: the three tones produce different text")
+def _(page):
+    """If the tone chips did nothing, every client would get the same email."""
+    open_product(page, "status-note", "StatusNote.html")
+    page.click("#demo")
+    short = page.inner_text("#doc")
+
+    page.click('#tones .chip[data-t="warm"]')
+    warm = page.inner_text("#doc")
+
+    page.click('#tones .chip[data-t="detailed"]')
+    detailed = page.inner_text("#doc")
+
+    if not (short != warm and warm != detailed and short != detailed):
+        raise AssertionError("tones produced identical output")
+    contains(warm, "Have a good weekend", "warm sign-off")
+    contains(detailed, "FINISHED THIS WEEK", "detailed heading")
+
+
+@check("status note: risk line surfaces and warns")
+def _(page):
+    open_product(page, "status-note", "StatusNote.html")
+    page.click("#demo")
+    contains(page.inner_text("#doc"), "One thing to flag", "risk line")
+    contains(page.inner_text("#advice"), "flagged a risk", "advice")
+
+
+@check("status note: no blockers means no hollow ask")
+def _(page):
+    """An 'I need from you' with nothing under it trains the client to ignore it."""
+    open_product(page, "status-note", "StatusNote.html")
+    page.click("#demo")
+    page.fill("#blocked", "")
+    page.dispatch_event("#blocked", "input")
+    doc = page.inner_text("#doc")
+    if "I need from you" in doc:
+        raise AssertionError("empty blocker list still printed a request")
+    contains(doc, "Nothing needed from you", "reassurance instead")
+
+
 # ---------------------------------------------------------------- Invoice Desk
 @check("invoice desk: loads without error")
 def _(page):
