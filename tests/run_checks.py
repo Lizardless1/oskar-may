@@ -477,6 +477,61 @@ def _(page):
     contains(page.inner_text("#doc"), "DATA PROTECTION", "data protection clause")
 
 
+# ---------------------------------------------------------------- Mileage Log
+@check("mileage log: splits the trip that crosses 10,000 miles")
+def _(page):
+    """9600 then 800 then 420 miles.
+
+    9600 * 0.45 = 4320
+    the 800-mile trip straddles the line: 400 @ 45p = 180, 400 @ 25p = 100 => 280
+    420 @ 25p = 105
+    total 4705, with 10000 claimed at 45p and 820 at 25p.
+    """
+    open_product(page, "mileage-log", "MileageLog.html")
+    page.click("#demo")
+    eq(page.inner_text("#sMiles"), "10,820", "business miles")
+    eq(page.inner_text("#sTotal"), "£4,705.00", "total claimable")
+    eq(page.inner_text("#sRate1"), "£4,500.00", "claim at 45p")
+    eq(page.inner_text("#sRate2"), "£205.00", "claim at 25p")
+    eq(page.inner_text("#wM1"), "10,000", "miles at 45p")
+    eq(page.inner_text("#wM2"), "820", "miles at 25p")
+
+
+@check("mileage log: the straddling row is 280, not 360")
+def _(page):
+    """Naive 45p on everything would claim 360 for that trip. It must be 280."""
+    open_product(page, "mileage-log", "MileageLog.html")
+    page.click("#demo")
+    claims = page.evaluate(
+        """() => [...document.querySelectorAll('#rows tr')]
+                 .map(tr => tr.querySelector('.f-claim').textContent.trim())"""
+    )
+    eq(claims[1], "£280.00", "straddling trip claim")
+    # and prove the naive figure is different, so the test would catch a regression
+    if claims[1] == "£360.00":
+        raise AssertionError("regression: all miles claimed at 45p")
+
+
+@check("mileage log: stays on 45p while under the threshold")
+def _(page):
+    """A short year must be a straight 45p calculation with nothing at 25p."""
+    open_product(page, "mileage-log", "MileageLog.html")
+    page.locator("#rows tr").first.locator(".f-miles").fill("1000")
+    page.dispatch_event("#rows tr:nth-child(1) .f-miles", "input")
+    # clear any extra rows left by a previous demo run in the same browser profile
+    eq(page.inner_text("#sTotal"), "£450.00", "1000 miles at 45p")
+    eq(page.inner_text("#sRate2"), "£0.00", "nothing over threshold")
+    eq(page.inner_text("#wM2"), "0", "zero miles at 25p")
+
+
+@check("mileage log: reports miles left before the drop")
+def _(page):
+    open_product(page, "mileage-log", "MileageLog.html")
+    page.locator("#rows tr").first.locator(".f-miles").fill("4000")
+    page.dispatch_event("#rows tr:nth-child(1) .f-miles", "input")
+    contains(page.inner_text("#nadir"), "6,000", "miles remaining at 45p")
+
+
 # ---------------------------------------------------------------- Invoice Desk
 @check("invoice desk: loads without error")
 def _(page):
