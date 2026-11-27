@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Red Flag Brief — sixteen things that predict a bad project</title>
+<style>
+  :root{
+    --ink:#14171c; --ink-soft:#3f4753; --muted:#6b7280; --faint:#9aa1ab;
+    --line:#e4e7ec; --bg:#fafaf9; --white:#fff;
+    --red:#8f2230; --redbg:#fbeef0;
+    --amber:#8a5a00; --amberbg:#fdf6e7;
+    --serif:ui-serif,Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:40px 22px 80px}
+
+  header.hero{border-bottom:2px solid var(--ink);padding-bottom:26px;margin-bottom:30px}
+  .kicker{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 0 12px}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(30px,4.6vw,43px);line-height:1.08;letter-spacing:-1.1px;margin:0 0 14px}
+  .lede{font-size:16.5px;color:var(--ink-soft);margin:0;max-width:56ch}
+  .meta{font-size:12.5px;color:var(--faint);margin-top:16px}
+
+  h2{font-family:var(--serif);font-weight:400;font-size:24px;letter-spacing:-.5px;line-height:1.2;margin:38px 0 6px}
+  h2 .num{font-size:12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-weight:700;
+          color:var(--faint);letter-spacing:.1em;display:block;margin-bottom:3px}
+  p{margin:0 0 13px}
+  .why{font-size:14.5px;color:var(--muted);margin:0 0 14px;padding-left:14px;border-left:2px solid var(--line)}
+
+  .flag{background:var(--white);border:1px solid var(--line);border-radius:11px;padding:18px 20px;margin:0 0 14px}
+  .flag .q{font-size:15.5px;font-weight:600;margin:0 0 9px;line-height:1.45}
+  .flag .a{font-size:14.2px;color:var(--ink-soft);margin:0 0 9px}
+  .flag .a:last-child{margin-bottom:0}
+  .sev{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+       padding:2px 8px;border-radius:99px;margin-bottom:9px}
+  .sev.high{background:var(--redbg);color:var(--red)}
+  .sev.mid{background:var(--amberbg);color:var(--amber)}
+  .sev.low{background:#f1f2f4;color:#6b7280}
+
+  .band{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin:34px 0}
+  .band h3{font-family:var(--serif);font-weight:400;font-size:20px;margin:0 0 10px;letter-spacing:-.4px}
+  .band p{font-size:14.5px;color:var(--ink-soft)}
+  .band p:last-child{margin-bottom:0}
+  .band a{color:#1c1917;font-weight:600}
+
+  .score{border:2px solid var(--ink);border-radius:12px;padding:22px 24px;margin:34px 0;background:var(--white)}
+  .score h3{font-family:var(--serif);font-weight:400;font-size:21px;margin:0 0 12px;letter-spacing:-.4px}
+  .score ul{margin:0 0 14px;padding-left:20px;font-size:14.5px}
+  .score li{margin-bottom:6px}
+  .score .verdict{font-size:14.5px;font-weight:600;margin:0}
+  .score .v-red{color:var(--red)}
+  .score .v-amber{color:var(--amber)}
+  .score .v-green{color:#0d6b3f}
+
+  footer{border-top:1px solid var(--line);margin-top:44px;padding-top:22px;font-size:13px;color:var(--muted)}
+  footer p{margin:0 0 9px}
+  footer a{color:var(--ink)}
+
+  @media print{
+    @page{margin:16mm}
+    body{background:#fff;font-size:11.5pt}
+    .band,.flag,.score{break-inside:avoid}
+    a{text-decoration:none;color:#000}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="kicker">A free brief · Oskar May</p>
+  <h1>Sixteen things that predict a bad project.</h1>
+  <p class="lede">Not vibes, and not "trust your gut". Specific things clients say and do in
+  the first two conversations that correlate with a project going wrong six weeks later —
+  and what to ask instead, while you can still say no.</p>
+  <p class="meta">Read it once before your next first call. It takes fifteen minutes and
+  saves roughly a week of unpaid work a year.</p>
+</header>
+
+<p>The pattern is nearly always the same. Nothing goes dramatically wrong. Nobody shouts.
+The work simply expands, the revisions continue, the invoice arrives late, and you finish
+the project earning less per hour than you would have at a supermarket — while telling
+yourself it was good experience.</p>
+
+<p>These are the signals. They are not proof of a bad client. They are reasons to ask one
+more question before you sign, or to price the risk in.</p>
+
+<h2><span class="num">01</span>They cannot name who approves</h2>
+<div class="flag">
+  <span class="sev high">High</span>
+  <p class="q">"I'll need to run it past a few people."</p>
+  <p class="a">This is the single most expensive sentence in freelancing. "A few people"
+  means nobody, and it means feedback arrives from three directions, contradicts itself,
+  and you mediate it unpaid.</p>
+  <p class="a"><strong>Ask:</strong> "Who has final sign-off on this? If two people disagree,
+  whose call is it?" Get a name. If they cannot give one, that is your answer.</p>
+</div>
+
+<h2><span class="num">02</span>The brief is a feeling, not a document</h2>
+<div class="flag">
+  <span class="sev high">High</span>
+  <p class="q">"You'll know it when you see it."</p>
+  <p class="a">Honest, and it means the revision count is unlimited because the target
+  moves every time you hit it. You are not being hired to make something; you are being
+  hired to make someone feel something they cannot describe.</p>
+  <p class="a"><strong>Ask:</strong> "Can you send me two things that already give you that
+  feeling — anything, not just competitors?" If they cannot, quote hourly, not fixed.</p>
+</div>
+
+<h2><span class="num">03</span>They mention a deadline first and a budget second</h2>
+<div class="flag">
+  <span class="sev high">High</span>
+  <p class="q">"We need this live by the 14th."</p>
+  <p class="a">Urgency before scope is how you get a fixed price for an undefined job with
+  no time to think. The deadline has become the constraint that justifies everything else,
+  including unpaid overtime.</p>
+  <p class="a"><strong>Ask:</strong> "What happens on the 14th?" Often the answer is a
+  meeting, not a launch. That single question can buy you three weeks.</p>
+</div>
+
+<h2><span class="num">04</span>"It's simple" appears in the first email</h2>
+<div class="flag">
+  <span class="sev high">High</span>
+  <p class="q">"It's a really simple site, just a few pages."</p>
+  <p class="a">People who have commissioned work before never say this. They know the
+  simple version still takes a week. The word is a request for a discount disguised as
+  a description.</p>
+  <p class="a"><strong>Ask:</strong> "Can you walk me through what 'simple' means — how many
+  pages, and who writes the copy?" Then quote from that, in writing.</p>
+</div>
+
+<h2><span class="num">05</span>They have been through three freelancers</h2>
+<div class="flag">
+  <span class="sev high">High</span>
+  <p class="q">"Our last designer just disappeared."</p>
+  <p class="a">Sometimes true and unlucky. Often the story omits that all three left for the
+  same reason. You are about to be the fourth data point.</p>
+  <p class="a"><strong>Ask:</strong> "What happened with the last one — what would you do
+  differently this time?" Listen for whether they blame the person or the process. Blaming
+  the process is a good sign. Blaming everybody is not.</p>
+</div>
+
+<h2><span class="num">06</span>Payment terms get vaguer as the call goes on</h2>
+<div class="flag">
+  <span class="sev high">High</span>
+  <p class="q">"We'll sort out the invoice side later."</p>
+  <p class="a">The invoice is the part of the project that determines whether it was worth
+  doing, and it is the part they are least interested in discussing. That is information.</p>
+  <p class="a"><strong>Ask:</strong> "Deposit on acceptance, balance on delivery, 14 days —
+  does that work?" Say it before the work, not after. Anyone who objects to a deposit is
+  telling you about their cash position.</p>
+</div>
+
+<h2><span class="num">07</span>"Can you just…" </h2>
+<div class="flag">
+  <span class="sev mid">Medium</span>
+  <p class="q">"Can you just tweak the logo while you're in there?"</p>
+  <p class="a">The word "just" is a scope-creep tell. It is never just the logo. It is the
+  logo, then the colours, then the font, then a conversation about the brand.</p>
+  <p class="a"><strong>Ask:</strong> "Happy to — I'll price it separately so it doesn't
+  affect the main timeline. Want that now or after delivery?" Yes-and-price beats no.</p>
+</div>
+
+<h2><span class="num">08</span>They compare you to a much cheaper quote</h2>
+<div class="flag">
+  <span class="sev mid">Medium</span>
+  <p class="q">"Someone on Fiverr said they'd do it for 200."</p>
+  <p class="a">Not always a red flag; sometimes it is a test. It becomes one when they expect
+  you to match it, because that means they see the work as a commodity and will swap you for
+  the next cheaper option the moment something goes wrong.</p>
+  <p class="a"><strong>Ask:</strong> "What made you approach me as well?" If the answer is
+  quality or judgement, there is a deal. If it is "you were available", there probably is not.</p>
+</div>
+
+<h2><span class="num">09</span>Every message arrives as a new email thread</h2>
+<div class="flag">
+  <span class="sev mid">Medium</span>
+  <p class="q">Four separate emails, three subjects, no context.</p>
+  <p class="a">Disorganised communication at the enquiry stage becomes disorganised feedback
+  at the review stage. You will spend hours reconstructing what was agreed.</p>
+  <p class="a"><strong>Ask:</strong> "Shall we keep decisions in one thread so we both have
+  the record?" Then send a summary after every call. Make the record, and make it theirs.</p>
+</div>
+
+<h2><span class="num">10</span>They want to "see something first"</h2>
+<div class="flag">
+  <span class="sev mid">Medium</span>
+  <p class="q">"Can you mock something up so we can decide?"</p>
+  <p class="a">Speculative work, requested politely. It is unpaid, it sets the expectation
+  that thinking is free, and the thing you produce will be judged without a brief.</p>
+  <p class="a"><strong>Ask:</strong> "I can do a paid discovery session — one hour, fixed fee,
+  you leave with a direction. Or we start properly with a deposit. Which suits?"</p>
+</div>
+
+<h2><span class="num">11</span>They are "just about to" get funding</h2>
+<div class="flag">
+  <span class="sev mid">Medium</span>
+  <p class="q">"The investment closes next month, so we'll pay you then."</p>
+  <p class="a">Your invoice has been placed in a queue behind an event outside your control
+  and outside your visibility. Funding that is "closing next month" has a habit of closing
+  the month after that.</p>
+  <p class="a"><strong>Ask:</strong> "Who is paying this invoice, and when is it approved?"
+  If the answer involves a future event, consider a smaller scope paid up front.</p>
+</div>
+
+<h2><span class="num">12</span>No questions about the work</h2>
+<div class="flag">
+  <span class="sev mid">Medium</span>
+  <p class="q">They accept your proposal in one line, without asking anything.</p>
+  <p class="a">Clients who ask nothing at the start ask everything at the end. The questions
+  were always there; they just arrive after the work has been done, when they are far more
+  expensive.</p>
+  <p class="a"><strong>Ask:</strong> "What would make you say this was a waste of money?"
+  That question surfaces the real requirements before you begin.</p>
+</div>
+
+<h2><span class="num">13</span>They are doing you a favour</h2>
+<div class="flag">
+  <span class="sev low">Low, but corrosive</span>
+  <p class="q">"This will be great exposure for you."</p>
+  <p class="a">Exposure does not pay rent. Worse, it establishes that your work has a
+  discounted value in this relationship, which quietly sets the price for everything after.</p>
+  <p class="a"><strong>Ask:</strong> "I charge for the work, but I'm happy to discuss a
+  smaller scope that fits your budget." Smaller is fine. Free is not.</p>
+</div>
+
+<h2><span class="num">14</span>They apologise for their own colleagues</h2>
+<div class="flag">
+  <span class="sev low">Low, but telling</span>
+  <p class="q">"Sorry, marketing can be difficult about these things."</p>
+  <p class="a">They are pre-apologising for a problem they expect you to absorb. You are
+  being warned, kindly, about a conflict that will become yours.</p>
+  <p class="a"><strong>Ask:</strong> "Who else will review this, and does everyone agree on
+  what we're doing?" Better to discover the faction now than in week four.</p>
+</div>
+
+<h2><span class="num">15</span>They want to pay you in future revenue</h2>
+<div class="flag">
+  <span class="sev high">High</span>
+  <p class="q">"We can't pay much now, but you'd get 5% of what it earns."</p>
+  <p class="a">A share of revenue is not payment; it is a bet on somebody else's execution,
+  made with your labour as the stake. It also quietly converts you from supplier to investor,
+  with none of the protections an investor would insist on.</p>
+  <p class="a"><strong>Ask:</strong> "What's the fixed fee for the build? I'm happy to discuss
+  a bonus on top if it performs." If there is no fixed fee anywhere in the conversation,
+  you are being asked to work for free with extra steps.</p>
+</div>
+
+<h2><span class="num">16</span>Nobody has thought about what happens after launch</h2>
+<div class="flag">
+  <span class="sev mid">Medium</span>
+  <p class="q">"We'll worry about updates later."</p>
+  <p class="a">Launch day is the start of the support relationship, not the end of the
+  project. Without a stated answer, "later" becomes a stream of small free requests from
+  someone who reasonably believes you are still their developer.</p>
+  <p class="a"><strong>Ask:</strong> "After handover, do you want a support arrangement or a
+  clean break?" Both are fine. Having no answer is how a three-week project becomes a
+  two-year obligation that pays nothing.</p>
+</div>
+
+<div class="score">
+  <h3>Scoring it</h3>
+  <p>Count the <strong>High</strong> flags and the <strong>Medium</strong> flags separately.
+  They are not equally serious.</p>
+  <ul>
+    <li><strong>0 High, 0–1 Medium:</strong> normal project. Proceed as quoted.</li>
+    <li><strong>1 High:</strong> proceed, but fix that one thing in writing first. One is
+    usually an honest gap, not a warning.</li>
+    <li><strong>2 High:</strong> double the deposit and shorten the payment terms. If they
+    refuse both, that is your answer.</li>
+    <li><strong>3+ High:</strong> walk away, or quote hourly with a weekly cap and no
+    fixed delivery promise. Do not take this on fixed-price.</li>
+  </ul>
+  <p class="verdict v-red">If you found yourself recognising the client you are currently
+  working for — that is why you opened this. It is not too late to put a change order in,
+  and it is much cheaper now than in three weeks.</p>
+</div>
+
+<div class="band">
+  <h3>The one habit that prevents most of this</h3>
+  <p>Send a written confirmation after kickoff: what is included, what is not, who approves,
+  when feedback is due, what happens if the brief changes. Ask them to reply if anything is
+  wrong. Silence means aligned.</p>
+  <p>That single message is the difference between a project that runs on trust and a project
+  that runs on hope. It takes twenty minutes and it is the highest-return twenty minutes in
+  freelancing.</p>
+</div>
+
+<div class="band">
+  <h3>If you want the tools that go with this</h3>
+  <p>This brief is free and always will be. The things I sell are the documents and
+  calculators that come after it — quoting, change orders, chasing late invoices, knowing
+  what you actually keep after tax.</p>
+  <p>All of them are single files that run offline, priced between $8 and $17, bought once
+  and kept forever. No subscriptions.</p>
+  <p><a href="https://lizardless.gumroad.com/tools-for-freelancers">See the full set →</a></p>
+  <p style="font-size:13px;color:#6b7280;margin-top:14px">And if none of it is useful, that
+  is fine. This brief was still worth what you paid for it.</p>
+</div>
+
+<footer>
+  <p><strong>The Red Flag Brief</strong> · written by Oskar May, who has been the fourth
+  freelancer at least twice.</p>
+  <p>Free to share, forward, or print for a friend who is about to say yes to something
+  they shouldn't.</p>
+</footer>
+
+</div>
+</body>
+</html>
