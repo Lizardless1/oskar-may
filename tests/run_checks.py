@@ -420,6 +420,63 @@ def _(page):
     eq(page.inner_text("#wVat"), "£1,550 per month", "monthly VAT at 20%")
 
 
+# ---------------------------------------------------------------- Terms Sheet
+@check("terms sheet: default clauses render with the user's figures")
+def _(page):
+    """Ten clauses on by default; deposit, terms, revision count and law injected."""
+    open_product(page, "terms-sheet", "TermsSheet.html")
+    page.click("#demo")
+    doc = page.inner_text("#doc")
+    for clause in ["SCOPE OF WORK", "REVISIONS", "PAYMENT", "INTELLECTUAL PROPERTY",
+                   "LIMITATION OF LIABILITY", "CANCELLATION", "CONFIDENTIALITY",
+                   "SHOWING THE WORK", "YOUR RESPONSIBILITIES", "WHAT I PROMISE", "GENERAL"]:
+        contains(doc, clause, clause)
+    contains(doc, "deposit of 40%", "deposit figure")
+    contains(doc, "within 14 days", "payment terms")
+    contains(doc, "includes 2 round", "revision count")
+    contains(doc, "law of England and Wales", "governing law")
+
+
+@check("terms sheet: optional clauses are off until asked for")
+def _(page):
+    """Data protection and non-exclusivity must not appear by default."""
+    open_product(page, "terms-sheet", "TermsSheet.html")
+    page.click("#demo")
+    doc = page.inner_text("#doc")
+    if "DATA PROTECTION" in doc:
+        raise AssertionError("data protection clause should be off by default")
+    if "NON-EXCLUSIVITY" in doc:
+        raise AssertionError("non-exclusivity clause should be off by default")
+
+
+@check("terms sheet: toggling a clause removes it and renumbers")
+def _(page):
+    """A document with a gap in the numbering looks careless in front of a client."""
+    open_product(page, "terms-sheet", "TermsSheet.html")
+    page.click("#demo")
+    page.click('#toggles input[data-c="payment"]')
+    doc = page.inner_text("#doc")
+    if "PAYMENT" in doc:
+        raise AssertionError("payment clause should have been removed")
+
+    nums = page.evaluate(
+        r"""() => document.getElementById('doc').textContent
+                 .split('\n')
+                 .filter(l => /^\d+\. [A-Z]/.test(l))
+                 .map(l => parseInt(l, 10))"""
+    )
+    expected = list(range(1, len(nums) + 1))
+    eq(nums, expected, "clause numbering must stay sequential")
+
+
+@check("terms sheet: enabling an optional clause adds it")
+def _(page):
+    open_product(page, "terms-sheet", "TermsSheet.html")
+    page.click("#demo")
+    page.click('#toggles input[data-c="data"]')
+    contains(page.inner_text("#doc"), "DATA PROTECTION", "data protection clause")
+
+
 # ---------------------------------------------------------------- Invoice Desk
 @check("invoice desk: loads without error")
 def _(page):
